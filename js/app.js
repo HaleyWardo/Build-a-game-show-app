@@ -61,6 +61,7 @@ function checkLetter(buttonClicked) {
     for (let i = 0; i < letter.length; i++){
         if (buttonClicked.textContent === letter[i].textContent) {
             letter.className = 'show';
+            const letterFound = letter[i];
         } else {
             return null;
         }
@@ -80,6 +81,8 @@ startButton.addEventListener('click', () => {
 
 //listener for when user presses a key on keyboard
 qwertyDiv.addEventListener('keypress', (e) => {
-    e.target.className = 'chosen';
-    checkLetter();
+    if (e.target.tagName === 'BUTTON') {
+        e.target.className = 'chosen';
+        checkLetter(button);
+    }
 });
