@@ -2,11 +2,19 @@
 //CONSTANTS
 /////////////
 
+const overlay = document.getElementById('overlay');
+const title = document.querySelector('.title');
+const startButton = document.getElementsByClassName('btn__reset')[0];
 const phraseDiv = document.getElementById('phrase');
-const ul = document.getElementsByTagName('ul');
+const phraseUl = document.getElementsByTagName('ul');
+const letter = document.getElementsByClassName('letter');
+const show = document.getElementsByClassName('show');
 const qwertyDiv = document.getElementById('qwerty');   
 const letterButton = qwertyDiv.querySelectorAll('button');
-const startButton = document.getElementsByClassName('btn__reset')[0];
+const scoreboard = document.getElementById('scoreboard');
+const scoreboardLi = scoreboard.querySelectorAll('.tries');
+
+
 
 const phrases = [
     'A Chip Off The Old Block',
@@ -16,6 +24,13 @@ const phrases = [
     'Keeping It Real',
 ];
 
+const resetPhrases = [
+    'The Breakfast Club',
+    'Jurassic Park',
+    'Stranger Things',
+    'Rick and Morty',
+    'Alien covenant',
+]
 
 /////////////
 //VARIABLES
@@ -42,7 +57,7 @@ const phraseArray = getRandomPhraseAsArray(phrases);
 function addPhraseToDisplay(array) {   
     for (let i = 0; i < phraseArray.length; i++) {
         const listItem = document.createElement('li');
-        ul[0].appendChild(listItem);
+        phraseUl[0].appendChild(listItem);
         listItem.textContent = phraseArray[i];
     
         if (phraseArray[i] != ' ') {
@@ -57,7 +72,6 @@ addPhraseToDisplay(phraseArray);
 
 //function to compare letter clicked vs random phrase
 function checkLetter(buttonClicked) {
-    const letter = document.getElementsByClassName('letter');
     const letterClicked = buttonClicked.textContent.toUpperCase();
     let letterFound = false;
 
@@ -71,16 +85,35 @@ function checkLetter(buttonClicked) {
     return letterFound ? letterClicked : null;
 }
 
+//function to check if the player has won or not
+function checkWin() {
+        if (letter.length === show.length) {
+            overlay.classList.add('win');
+            overlay.style.display ='';
+            title.textContent = "You win!"
+            startButton.textContent = "Reset"
+        }
+    
+        if (missed >= 5) {
+            overlay.classList.add('lose');
+            overlay.style.display ='';
+            title.textContent = "You lose!"
+            startButton.textContent = "Reset"
+        }
+    }
+    
+
 
 //////////////////
 //EVENT HANDLERS
 /////////////////
 
+
 //Listener for when start button is clicked
 startButton.addEventListener('click', () => {  
-    const overlay = document.getElementById('overlay');
     overlay.style.display = "none";
 });
+
 
 //listener for when user presses a key on keyboard
 window.addEventListener('click', (e) => {
@@ -90,6 +123,20 @@ window.addEventListener('click', (e) => {
 
         if (letterFound === null) {
             missed += 1;
-        } 
+        }
+
+        if (missed >= 1 && missed <= 5){
+            const heart = scoreboardLi[scoreboardLi.length-missed];
+            heart.getElementsByTagName('img')[0].src = 'images/lostHeart.png';
+        }
+    }
+    checkWin();
+});
+
+
+startButton.addEventListener('click', (e) => {
+    if (e.target.textContent === 'Reset'){
     }
 });
+
+
