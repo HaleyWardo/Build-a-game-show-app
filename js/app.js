@@ -59,7 +59,7 @@ addPhraseToDisplay(phraseArray);
 function checkLetter(buttonClicked) {
     const letter = document.getElementsByClassName('letter');
     const letterClicked = buttonClicked.textContent.toUpperCase();
-    const letterFound = false;
+    let letterFound = false;
 
     for (let i = 0; i < letter.length; i++){
         if (letterClicked === letter[i].textContent) {
