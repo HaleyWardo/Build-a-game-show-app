@@ -55,17 +55,20 @@ function addPhraseToDisplay(array) {
 addPhraseToDisplay(phraseArray);
 
 
-
+//function to compare letter clicked vs random phrase
 function checkLetter(buttonClicked) {
     const letter = document.getElementsByClassName('letter');
+    const letterClicked = buttonClicked.textContent.toUpperCase();
+    const letterFound = false;
+
     for (let i = 0; i < letter.length; i++){
-        if (buttonClicked.textContent === letter[i].textContent) {
-            letter.className = 'show';
-            const letterFound = letter[i];
-        } else {
-            return null;
-        }
+        if (letterClicked === letter[i].textContent) {
+            letter[i].classList.add('show');
+            letterFound = true;
+        } 
     }
+    
+    return letterFound ? letterClicked : null;
 }
 
 
@@ -80,9 +83,13 @@ startButton.addEventListener('click', () => {
 });
 
 //listener for when user presses a key on keyboard
-qwertyDiv.addEventListener('keypress', (e) => {
+window.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         e.target.className = 'chosen';
-        checkLetter(button);
+        const letterFound = checkLetter(e.target);
+
+        if (letterFound === null) {
+            missed += 1;
+        } 
     }
 });
