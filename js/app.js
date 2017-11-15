@@ -2,16 +2,16 @@
 //CONSTANTS
 /////////////
 
-const overlay = document.getElementById('overlay');
+const overlay = document.querySelector('#overlay');
 const title = document.querySelector('.title');
-const startButton = document.getElementsByClassName('btn__reset')[0];
-const phraseDiv = document.getElementById('phrase');
-const phraseUl = document.getElementsByTagName('ul')[0];
+const startButton = document.querySelector('.btn__reset');
+const phraseDiv = document.querySelector('#phrase');
+const phraseUl = phraseDiv.querySelector('ul');
 const letter = document.getElementsByClassName('letter');
 const show = document.getElementsByClassName('show');
-const qwertyDiv = document.getElementById('qwerty');   
+const qwertyDiv = document.querySelector('#qwerty');   
 const letterButtons = qwertyDiv.querySelectorAll('button');
-const scoreboard = document.getElementById('scoreboard');
+const scoreboard = document.querySelector('#scoreboard');
 const scoreboardLi = scoreboard.querySelectorAll('.tries');
 
 const phrases = [
@@ -88,14 +88,14 @@ function checkLetter(buttonClicked) {
 function checkWin() {
     if (letter.length === show.length) {
         overlay.classList.add('win');
-        overlay.style.display ='';
+        overlay.style.display = '';
         title.textContent = "You win!"
         startButton.textContent = "Reset"
     }
 
     if (missed >= 5) {
         overlay.classList.add('lose');
-        overlay.style.display ='';
+        overlay.style.display = '';
         title.textContent = "You lose!"
         startButton.textContent = "Reset"
     }
@@ -122,6 +122,8 @@ startButton.addEventListener('click', () => {
 window.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         e.target.className = 'chosen';
+        e.target.disabled = true;
+
         const letterFound = checkLetter(e.target);
 
         if (letterFound === null) {
@@ -138,10 +140,10 @@ window.addEventListener('click', (e) => {
 
 startButton.addEventListener('click', (e) => {
     if (e.target.textContent === 'Reset') {
-        // Set missed to 0
+        // set missed to 0
         missed = 0;
 
-        // Reset heart states
+        // reset heart states
         for (let i = 0; i < scoreboardLi.length; i++) {
             const img = scoreboardLi[i].getElementsByTagName('img')[0];
             img.src = 'images/liveHeart.png';
@@ -155,6 +157,7 @@ startButton.addEventListener('click', (e) => {
         // remove chosen class from all buttons
         for (let i = 0; i < letterButtons.length; i++) {
             letterButtons[i].classList.remove('chosen');
+            letterButtons[i].disabled = false;
         }
 
         // generate new random phrase
