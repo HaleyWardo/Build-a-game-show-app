@@ -6,15 +6,13 @@ const overlay = document.getElementById('overlay');
 const title = document.querySelector('.title');
 const startButton = document.getElementsByClassName('btn__reset')[0];
 const phraseDiv = document.getElementById('phrase');
-const phraseUl = document.getElementsByTagName('ul');
+const phraseUl = document.getElementsByTagName('ul')[0];
 const letter = document.getElementsByClassName('letter');
 const show = document.getElementsByClassName('show');
 const qwertyDiv = document.getElementById('qwerty');   
-const letterButton = qwertyDiv.querySelectorAll('button');
+const letterButtons = qwertyDiv.querySelectorAll('button');
 const scoreboard = document.getElementById('scoreboard');
 const scoreboardLi = scoreboard.querySelectorAll('.tries');
-
-
 
 const phrases = [
     'A Chip Off The Old Block',
@@ -22,15 +20,12 @@ const phrases = [
     'Great Minds Think Alike',
     'Home Sweet Home',
     'Keeping It Real',
-];
-
-const resetPhrases = [
     'The Breakfast Club',
     'Jurassic Park',
     'Stranger Things',
     'Rick and Morty',
     'Alien covenant',
-]
+];
 
 /////////////
 //VARIABLES
@@ -38,39 +33,41 @@ const resetPhrases = [
 
 let missed = 0;   // number of missed guesses 
 
-
 /////////////
 //FUNCTIONS
 /////////////
 
-
-//function to get random phrase and split characters
+/**
+ * Function to get random phrase and split characters
+ * @param {*} array 
+ */
 function getRandomPhraseAsArray(array) {
-    const randomPhrase = array[Math.floor(Math.random()*phrases.length)];
+    const randomPhrase = array[Math.floor(Math.random() * array.length)];
     return randomPhrase.toUpperCase().split('');
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
-
-
-//function to add list item and display random phrase
+/**
+ * Function to add list item and display random phrase
+ * @param {*} array 
+ */
 function addPhraseToDisplay(array) {   
-    for (let i = 0; i < phraseArray.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         const listItem = document.createElement('li');
-        phraseUl[0].appendChild(listItem);
-        listItem.textContent = phraseArray[i];
+        phraseUl.appendChild(listItem);
+        listItem.textContent = array[i];
     
-        if (phraseArray[i] != ' ') {
+        if (array[i] != ' ') {
             listItem.className = 'letter';
         } else {
             listItem.className = 'space';
         }
     }
 }
-addPhraseToDisplay(phraseArray);
 
-
-//function to compare letter clicked vs random phrase
+/**
+ * Function to compare letter clicked vs random phrase
+ * @param {*} buttonClicked 
+ */
 function checkLetter(buttonClicked) {
     const letterClicked = buttonClicked.textContent.toUpperCase();
     let letterFound = false;
@@ -85,29 +82,35 @@ function checkLetter(buttonClicked) {
     return letterFound ? letterClicked : null;
 }
 
-//function to check if the player has won or not
+/**
+ * function to check if the player has won or not
+ */
 function checkWin() {
-        if (letter.length === show.length) {
-            overlay.classList.add('win');
-            overlay.style.display ='';
-            title.textContent = "You win!"
-            startButton.textContent = "Reset"
-        }
-    
-        if (missed >= 5) {
-            overlay.classList.add('lose');
-            overlay.style.display ='';
-            title.textContent = "You lose!"
-            startButton.textContent = "Reset"
-        }
+    if (letter.length === show.length) {
+        overlay.classList.add('win');
+        overlay.style.display ='';
+        title.textContent = "You win!"
+        startButton.textContent = "Reset"
     }
-    
+
+    if (missed >= 5) {
+        overlay.classList.add('lose');
+        overlay.style.display ='';
+        title.textContent = "You lose!"
+        startButton.textContent = "Reset"
+    }
+}
+
+//////////////////
+//EXECUTION
+/////////////////
+const phraseArray = getRandomPhraseAsArray(phrases);
+addPhraseToDisplay(phraseArray);
 
 
 //////////////////
 //EVENT HANDLERS
 /////////////////
-
 
 //Listener for when start button is clicked
 startButton.addEventListener('click', () => {  
@@ -133,9 +136,32 @@ window.addEventListener('click', (e) => {
     checkWin();
 });
 
-
 startButton.addEventListener('click', (e) => {
-    if (e.target.textContent === 'Reset'){
+    if (e.target.textContent === 'Reset') {
+        // Set missed to 0
+        missed = 0;
+
+        // Reset heart states
+        for (let i = 0; i < scoreboardLi.length; i++) {
+            const img = scoreboardLi[i].getElementsByTagName('img')[0];
+            img.src = 'images/liveHeart.png';
+        }
+
+        // remove li's
+        while (phraseUl.children.length > 0) {
+            phraseUl.removeChild(phraseUl.children[0]);
+        }
+
+        // remove chosen class from all buttons
+        for (let i = 0; i < letterButtons.length; i++) {
+            letterButtons[i].classList.remove('chosen');
+        }
+
+        // generate new random phrase
+        const newPhrase = getRandomPhraseAsArray(phrases);
+
+        // add new li's
+        addPhraseToDisplay(newPhrase);
     }
 });
 
