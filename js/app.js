@@ -56,7 +56,7 @@ function addPhraseToDisplay(array) {
         phraseUl.appendChild(listItem);
         listItem.textContent = array[i];
     
-        if (array[i] != ' ') {
+        if (array[i] !== ' ') {
             listItem.className = 'letter';
         } else {
             listItem.className = 'space';
@@ -159,6 +159,9 @@ startButton.addEventListener('click', (e) => {
             letterButtons[i].classList.remove('chosen');
             letterButtons[i].disabled = false;
         }
+
+        // reset overlay class
+        overlay.classList.remove('win', 'lose');
 
         // generate new random phrase
         const newPhrase = getRandomPhraseAsArray(phrases);

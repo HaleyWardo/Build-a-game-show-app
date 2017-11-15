@@ -46,6 +46,7 @@ button {
   margin: 6px;
   border: 1px solid transparent;
   padding: .5rem 1rem;
+  cursor: pointer;
   color: var(--color-keys);
   font-size: var(--font-size-medium);
   background-color: var(--color-keys-light);
@@ -124,6 +125,7 @@ button {
 }
 
 .btn__reset {
+  cursor: pointer;
   padding: 8px;
   margin: 50px auto;
   background: #FFFFFF;
